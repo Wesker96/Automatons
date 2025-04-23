@@ -1,7 +1,14 @@
 [
     {
-        "caption": "Automaton: Insert Template",
+        "caption": "Automaton: Insert Source Template",
         "command": "src_template",
+        "args": {
+            "syntax": "Packages/Verilog/Verilog.tmLanguage"
+        }
+    },
+    {
+        "caption": "Automaton: Insert Testbench Template",
+        "command": "tb_template",
         "args": {
             "syntax": "Packages/Verilog/Verilog.tmLanguage"
         }
