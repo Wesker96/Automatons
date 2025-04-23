@@ -1,0 +1,14 @@
+[
+    {
+        "caption": "Automatons",
+        "id": "automatons",
+        "mnemonic": "A",
+        "children":
+        [
+            {
+                "caption": "Create HDL Project",
+                "command": "create_struct_project"
+            }
+        ]
+    }
+]
