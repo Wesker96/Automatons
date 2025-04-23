@@ -1,6 +1,9 @@
 [
     {
         "caption": "Automaton: Insert Template",
-        "command": "src_template"
+        "command": "src_template",
+        "args": {
+            "syntax": "Packages/Verilog/Verilog.tmLanguage"
+        }
     }
 ]
