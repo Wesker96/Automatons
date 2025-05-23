@@ -3,9 +3,10 @@ from datetime import datetime
 
 class BaseTemplate:
     def __init__(self):
-        self.body = ''
-        self.date = ''
+        self.body = ""
+        self.date = ""
 
+        self.comm_sym = "//"
         self.sep_sec_pattern = "="
         self.sep_code_pattern = "-"
         self.max_length = 120
@@ -20,35 +21,35 @@ class BaseTemplate:
         self.date = now.strftime("%d.%m.%Y | %H:%M")
 
     def add_new_line(self, txt, pad_h=0, pad_v=0):
-        self.body += (' ' * pad_h) + txt + '\n' + ('\n' * pad_v)
+        self.body += (" " * pad_h) + txt + "\n" + ("\n" * pad_v)
 
     def sep_line(self, pattern: str):
-        return "//" + pattern * self.max_length + '\n'
+        return self.comm_sym + pattern * self.max_length + "\n"
 
     def wrap_section(self, title: str):
         txt = self.sep_line(self.sep_sec_pattern)
-        txt += '//' + ' ' * ((self.max_length - len(title) - 2) // 2) + title + '\n'
+        txt += self.comm_sym + " " * ((self.max_length - len(title) - 2) // 2) + title + "\n"
         txt += self.sep_line(self.sep_sec_pattern)
 
         return txt
 
 
 class SrcTemplate(BaseTemplate):
-    SECT_DESCRIPTION = 'Description'
-    SECT_CHECKING = 'Checking parameters'
-    SECT_VARS = 'Vars and genvar signals'
-    SECT_INCLUDE = 'Includes'
-    SECT_LOCAL = 'Local parameters'
-    SECT_REG = 'Registers'
-    SECT_INIT_REG = 'Init registers'
-    SECT_WIRE = 'Wires'
-    SECT_BEHAVIOR = 'Behavior'
+    SECT_DESCRIPTION = "Description"
+    SECT_CHECKING = "Checking parameters"
+    SECT_VARS = "Vars and genvar signals"
+    SECT_INCLUDE = "Includes"
+    SECT_LOCAL = "Local parameters"
+    SECT_REG = "Registers"
+    SECT_INIT_REG = "Init registers"
+    SECT_WIRE = "Wires"
+    SECT_BEHAVIOR = "Behavior"
 
     def __init__(self):
         super().__init__()
 
     def insert(self):
-        self.add_new_line('`timescale 1ns / 1ps', pad_v=1)
+        self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
         self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION))
 
         txt = "/*\n\nEngineer   : HammerMeow\nDate       : " + self.date
@@ -85,17 +86,17 @@ class SrcTemplate(BaseTemplate):
 
 
 class TbTemplate(BaseTemplate):
-    SECT_DESCRIPTION = 'Description'
-    SECT_PARAMETERS = 'Parameters of UUT'
-    SECT_IN = 'Inputs'
-    SECT_OUT = 'Outputs'
-    SECT_PARSIM = 'Parameters for simulation'
-    SECT_VARS = 'Vars and genvar signals'
-    SECT_INCLUDE = 'Includes'
-    SECT_UUT = 'UUT'
-    SECT_INIT = 'Initial'
-    SECT_SUPPORT = 'Support logic'
-    SECT_TASK = 'Local tasks'
+    SECT_DESCRIPTION = "Description"
+    SECT_PARAMETERS = "Parameters of UUT"
+    SECT_IN = "Inputs"
+    SECT_OUT = "Outputs"
+    SECT_PARSIM = "Parameters for simulation"
+    SECT_VARS = "Vars and genvar signals"
+    SECT_INCLUDE = "Includes"
+    SECT_UUT = "UUT"
+    SECT_INIT = "Initial"
+    SECT_SUPPORT = "Support logic"
+    SECT_TASK = "Local tasks"
 
     def __init__(self):
         super().__init__()
@@ -103,7 +104,7 @@ class TbTemplate(BaseTemplate):
         self.name_clk_period = "PERIOD"
 
     def insert(self):
-        self.add_new_line('`timescale 1ns / 1ps', pad_v=1)
+        self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
         self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION))
 
         txt = "/*\n\nEngineer   : HammerMeow\nDate       : " + self.date
@@ -161,3 +162,30 @@ class TbTemplate(BaseTemplate):
         txt += "end\n"
 
         return txt
+
+
+class GitignoreTemplate(BaseTemplate):
+    SEC_USER = "User Section"
+    SEC_SUBL = "Sublime Text Section"
+    SEC_FOLDERS = "Folder Section"
+    SEC_EXT = "Extensions Section"
+
+    def __init__(self):
+        super().__init__()
+
+        self.comm_sym = "#"
+        self.max_length = 60
+
+    def insert(self):
+        self.add_new_line(self.wrap_section(self.SEC_USER), pad_v=2)
+
+        self.add_new_line(self.wrap_section(self.SEC_SUBL))
+        self.add_new_line("*.sublime-workspace", pad_v=1)
+
+        self.add_new_line(self.wrap_section(self.SEC_FOLDERS))
+        self.add_new_line("build", pad_v=1)
+
+        self.add_new_line(self.wrap_section(self.SEC_EXT))
+
+        return self.body
+
