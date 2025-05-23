@@ -1,11 +1,47 @@
 """Entrypoint file of plugin."""
 
 import os
+import subprocess
+import threading
 
 import sublime
 import sublime_plugin
 
 from Automatons.src.lib.gen_template import GitignoreTemplate, SrcTemplate, TbTemplate
+from Automatons.src.lib.runner import Terminal
+
+
+class RunVivadoCommand(sublime_plugin.TextCommand):
+    """Command to run cmt with vivado."""
+
+    def run(self, edit):
+        python_path = "python"
+
+        # Путь к вашему внешнему скрипту
+        script_path = "C:/Users/shishkov_ps/AppData/Roaming/Sublime Text/Packages/Automatons/src/lib/runner.py"
+
+        thread = threading.Thread(target=self.run_script, args=(python_path, script_path, self.handle_output))
+        thread.start()
+
+    def run_script(self, python_path, script_path, callback):
+        vivado_path = os.environ.get("XILINX_VIVADO")
+        if vivado_path is None:
+            raise EnvironmentError("Переменная окружения XILINX_VIVADO не установлена")
+        vivado_path = vivado_path + "\settings64.bat"
+
+        obj = Terminal()
+        obj.run_script_0()
+        obj.run_script_1(vivado_path)
+        obj.stop()
+
+        # process = subprocess.Popen([python_path, script_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        #                            bufsize=1, universal_newlines=True, startupinfo=startupinfo)
+        # stdout, stderr = process.communicate()
+        # callback(stdout, stderr)
+
+    def handle_output(self, stdout, stderr):
+        print("stdout:", stdout)
+        print("stderr:", stderr)
 
 
 class SrcTemplateCommand(sublime_plugin.TextCommand):
