@@ -5,8 +5,11 @@ import threading
 import subprocess
 import time
 
-
-# from loguru import logger
+try:
+    from loguru import logger
+except ImportError:
+    from Automatons.src.mocks.mock_loguru import MockLogger
+    logger = MockLogger()
 
 
 class Terminal:
@@ -30,7 +33,7 @@ class Terminal:
         self.thread = threading.Thread(target=self.reader)
         self.thread.daemon = True
         self.thread.start()
-        # logger.info("run")
+        logger.info("run")
 
     def run_script_0(self):
         self.send_command("echo off")
@@ -62,13 +65,12 @@ class Terminal:
                 continue
 
             if line:
-                print(line)
-                # logger.info(line)
+                logger.info(line)
 
             time.sleep(0.01)
 
     def stop(self):
-        # logger.info("Closing terminal")
+        logger.info("Closing terminal")
         self._stop_reader.set()
         if self.proc.stdin:
             # try:
@@ -79,7 +81,7 @@ class Terminal:
                 # print(f"Error sending exit command: {e}")
         self.proc.wait()
         self.thread.join()
-        # logger.info("Terminal closed")
+        logger.info("Terminal closed")
 
     def __del__(self):
         try:
