@@ -1,12 +1,20 @@
+"""Install plugin script."""
+from __future__ import annotations
+
 import os
-from typing import Optional
 
+try:
+    from loguru import logger
+except ImportError:
+    from src.mocks.mock_loguru import MockLogger
+    logger = MockLogger()
 
-__NAME_ENV_AUTOMATONS__ = 'AUTOMATONS'
+__NAME_ENV_AUTOMATONS__ = "AUTOMATONS"
 __PATTERN_OF_SUBL_FOLDER__ = "Sublime Text"
 
 
-def get_path_to_subl() -> Optional[str]:
+def get_path_to_subl() -> str | None:
+    """Search path to Sublime Text into path environment. The path variable must be set in advance."""
     automations_path = os.getenv(__NAME_ENV_AUTOMATONS__)
 
     if automations_path:
@@ -18,17 +26,17 @@ def get_path_to_subl() -> Optional[str]:
     return None
 
 
-def install():
+def install() -> None:
+    """Install plugin for Sublime Text."""
     path2subl = get_path_to_subl()
 
     if path2subl:
-        print(path2subl)
+        msg = "Find path to Sublime Text: " + path2subl
+        logger.info(msg)
     else:
-        print("Not found path to Sublime Text.")
+        msg = "Not found path to Sublime Text. Check env path: " + __NAME_ENV_AUTOMATONS__
+        logger.info(msg)
 
 
 if __name__ == "__main__":
-    # C:\Users\user\AppData\Roaming\Sublime Text\Packages
-    # path = "C:/Users/user/AppData/Roaming/Sublime Text/Packages"
-
     install()
