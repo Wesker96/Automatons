@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 
 try:
     from loguru import logger
@@ -26,6 +27,20 @@ def get_path_to_subl() -> str | None:
     return None
 
 
+def delete_previous_plugin(dir_path: str, dir_name: str) -> None:
+    """Delete previous plugin."""
+    previous_plugin_path = os.path.join(dir_path, dir_name)
+
+    if os.path.exists(previous_plugin_path) and os.path.isdir(previous_plugin_path):
+        try:
+            shutil.rmtree(previous_plugin_path)
+            logger.info("Previous plugin founded and delete.")
+        except OSError:
+            logger.info("Previous plugin founded and try delete, but failed.")
+    else:
+        logger.info("Previous plugin not founded.")
+
+
 def install() -> None:
     """Install plugin for Sublime Text."""
     path2subl = get_path_to_subl()
@@ -36,6 +51,9 @@ def install() -> None:
     else:
         msg = "Not found path to Sublime Text. Check env path: " + __NAME_ENV_AUTOMATONS__
         logger.info(msg)
+
+    name_prj = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
+    delete_previous_plugin(path2subl, name_prj)
 
 
 if __name__ == "__main__":

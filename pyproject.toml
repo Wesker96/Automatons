@@ -29,7 +29,8 @@ lint.ignore = [
     "TRY003",                             # verbose raise
     "TRY300",                             # statement to else block
     "FIX001", "FIX002", "TD003", "TD002", # FIXME and TODO (for prod)
-    "S603"
+    "S603",
+    "PTH"                                 # pathlib instead os
 ]
 line-length = 120
 target-version = "py38"
