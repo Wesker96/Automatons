@@ -20,7 +20,8 @@ except ImportError:
 class SrcTemplateCommand(sublime_plugin.TextCommand):
     """Command to generate the source template."""
 
-    def run(self, edit, syntax):
+    def run(self, edit: sublime.Edit, syntax: str) -> None:
+        """Command body."""
         obj_test = SrcTemplate()
 
         cursor_position = self.view.sel()[0].begin()
@@ -34,7 +35,8 @@ class SrcTemplateCommand(sublime_plugin.TextCommand):
 class TbTemplateCommand(sublime_plugin.TextCommand):
     """Command to generate the testbench template."""
 
-    def run(self, edit, syntax):
+    def run(self, edit: sublime.Edit, syntax: str) -> None:
+        """Command body."""
         obj_test = TbTemplate()
 
         cursor_position = self.view.sel()[0].begin()
@@ -46,7 +48,8 @@ class TbTemplateCommand(sublime_plugin.TextCommand):
 class CreateStructProjectCommand(sublime_plugin.WindowCommand):
     """Command to generate the source template."""
 
-    def run(self):
+    def run(self) -> None:
+        """Command body."""
         path2prj = self.window.project_file_name()
 
         if path2prj is None:
@@ -64,25 +67,29 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
         self.add_files(path2prj)
 
     @staticmethod
-    def create_folder_structure(path):
+    def create_folder_structure(path: str) -> None:
+        """Form folders structure."""
         os.makedirs(os.path.join(path, "doc"), exist_ok=True)
         os.makedirs(os.path.join(path, "script"), exist_ok=True)
         os.makedirs(os.path.join(path, "src"), exist_ok=True)
         os.makedirs(os.path.join(path, "tb"), exist_ok=True)
 
-    def add_folder_to_prj(self, path):
+    def add_folder_to_prj(self, path: str) -> None:
+        """
+        Create file of subl-project.
+
+        more info: https://www.sublimetext.com/docs/projects.html
+        """
         project_data = self.window.project_data()
 
-        # folders = project_data.get("folders", [])
-
-        # more info: https://www.sublimetext.com/docs/projects.html
         folders = [{"path": path, "file_exclude_patterns": ["*.sublime-project", "*.sublime-workspace"]},
                    {"settings": {"tab_size": 4}}]
         project_data["folders"] = folders
 
         self.window.set_project_data(project_data)
 
-    def add_files(self, path):
+    def add_files(self, path: str) -> None:
+        """Create any files for core project."""
         git_tmp = GitignoreTemplate()
 
         with open(os.path.join(path, ".gitignore"), "w") as f:

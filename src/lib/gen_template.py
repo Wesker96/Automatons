@@ -1,8 +1,13 @@
-from datetime import datetime
+"""Collection of file generators."""
+
+import datetime
 
 
 class BaseTemplate:
-    def __init__(self):
+    """Base template. Contain general patterns."""
+
+    def __init__(self) -> None:
+        """Init, set base patterns."""
         self.body = ""
         self.date = ""
 
@@ -13,20 +18,24 @@ class BaseTemplate:
 
         self.get_date()
 
-    def insert(self):
-        pass
+    def insert(self) -> None:
+        """Form full template."""
 
-    def get_date(self):
-        now = datetime.now()
+    def get_date(self) -> None:
+        """Get date."""
+        now = datetime.datetime.now(tz=datetime.timezone.utc)
         self.date = now.strftime("%d.%m.%Y | %H:%M")
 
-    def add_new_line(self, txt, pad_h=0, pad_v=0):
+    def add_new_line(self, txt: str, pad_h: int = 0, pad_v: int = 0) -> None:
+        """Add new line of text."""
         self.body += (" " * pad_h) + txt + "\n" + ("\n" * pad_v)
 
-    def sep_line(self, pattern: str):
+    def sep_line(self, pattern: str) -> str:
+        """Generate dividing line."""
         return self.comm_sym + pattern * self.max_length + "\n"
 
-    def wrap_section(self, title: str):
+    def wrap_section(self, title: str) -> str:
+        """Wrap title section."""
         txt = self.sep_line(self.sep_sec_pattern)
         txt += self.comm_sym + " " * ((self.max_length - len(title) - 2) // 2) + title + "\n"
         txt += self.sep_line(self.sep_sec_pattern)
@@ -35,6 +44,8 @@ class BaseTemplate:
 
 
 class SrcTemplate(BaseTemplate):
+    """Template of verilog source."""
+
     SECT_DESCRIPTION = "Description"
     SECT_CHECKING = "Checking parameters"
     SECT_VARS = "Vars and genvar signals"
@@ -45,10 +56,12 @@ class SrcTemplate(BaseTemplate):
     SECT_WIRE = "Wires"
     SECT_BEHAVIOR = "Behavior"
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Init."""
         super().__init__()
 
-    def insert(self):
+    def insert(self) -> str:
+        """Form full template."""
         self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
         self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION))
 
@@ -74,7 +87,8 @@ class SrcTemplate(BaseTemplate):
         return self.body
 
     @staticmethod
-    def get_module():
+    def get_module() -> str:
+        """Form base module entity."""
         txt = "module __name__ #(\n"
         txt += "    parameter SIM = 0\n"
         txt += ")(\n"
@@ -86,6 +100,8 @@ class SrcTemplate(BaseTemplate):
 
 
 class TbTemplate(BaseTemplate):
+    """Template of testbench verilog source."""
+
     SECT_DESCRIPTION = "Description"
     SECT_PARAMETERS = "Parameters of UUT"
     SECT_IN = "Inputs"
@@ -98,12 +114,14 @@ class TbTemplate(BaseTemplate):
     SECT_SUPPORT = "Support logic"
     SECT_TASK = "Local tasks"
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Init."""
         super().__init__()
 
         self.name_clk_period = "PERIOD"
 
-    def insert(self):
+    def insert(self) -> str:
+        """Form full testbench template."""
         self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
         self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION))
 
@@ -138,10 +156,12 @@ class TbTemplate(BaseTemplate):
 
         return self.body
 
-    def get_parameters(self):
+    def get_parameters(self) -> str:
+        """Form parameters template."""
         return "parameter " + self.name_clk_period + " = 10000;"
 
-    def get_initial(self):
+    def get_initial(self) -> str:
+        """Form initial entity."""
         txt = "initial begin\n"
         txt += "    RST = 1;\n"
         txt += "    #(" + self.name_clk_period + "/2);\n"
@@ -153,7 +173,8 @@ class TbTemplate(BaseTemplate):
 
         return txt
 
-    def get_clk(self):
+    def get_clk(self) -> str:
+        """Form clock scheme."""
         txt = "always begin\n"
         txt += "    CLK = 1'b1;\n"
         txt += "    #(" + self.name_clk_period + "/2);\n"
@@ -165,18 +186,22 @@ class TbTemplate(BaseTemplate):
 
 
 class GitignoreTemplate(BaseTemplate):
+    """Form .gitignore file."""
+
     SEC_USER = "User Section"
     SEC_SUBL = "Sublime Text Section"
     SEC_FOLDERS = "Folder Section"
     SEC_EXT = "Extensions Section"
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Init and change some patterns."""
         super().__init__()
 
         self.comm_sym = "#"
         self.max_length = 60
 
-    def insert(self):
+    def insert(self) -> str:
+        """Form base .gitignore file."""
         self.add_new_line(self.wrap_section(self.SEC_USER), pad_v=2)
 
         self.add_new_line(self.wrap_section(self.SEC_SUBL))
@@ -188,4 +213,3 @@ class GitignoreTemplate(BaseTemplate):
         self.add_new_line(self.wrap_section(self.SEC_EXT))
 
         return self.body
-

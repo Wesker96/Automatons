@@ -1,9 +1,5 @@
 [
     {
-        "caption": "Automaton: Run Vivado",
-        "command": "run_vivado",
-    },
-    {
         "caption": "Automaton: Insert Source Template",
         "command": "src_template",
         "args": {

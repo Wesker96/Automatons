@@ -1,3 +1,3 @@
 """Entrypoint file of plugin."""
 
-from Automatons.src.automatons import *
+from Automatons.src.subl_cmd import *

@@ -15,7 +15,7 @@ __NAME_ENV_AUTOMATONS__ = "AUTOMATONS"
 __PATTERN_OF_SUBL_FOLDER__ = "Sublime Text"
 __PLUGIN_TREE__ = [
     "src",
-    "automatons.py",
+    "subl_cmd.py",
     "automatons.sublime-commands",
     "Main.sublime-menu",
     "CHANGELOG.md",

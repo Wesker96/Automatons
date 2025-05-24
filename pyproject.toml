@@ -30,13 +30,15 @@ lint.ignore = [
     "TRY300",                             # statement to else block
     "FIX001", "FIX002", "TD003", "TD002", # FIXME and TODO (for prod)
     "S603",
-    "PTH"                                 # pathlib instead os
+    "PTH",                                # pathlib instead os
+    "T201"                                # enable print
 ]
 line-length = 120
 target-version = "py38"
 exclude = [
     "tests/",                 # ignore tests folder
     "**/__pycache__/",        # additional excludes
+    "automatons.py"           # specific import for Sublime Text
 ]
 
 
