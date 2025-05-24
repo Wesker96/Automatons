@@ -6,6 +6,10 @@ Dependencies:
 
 Clone repo to 'C:\Users\user\AppData\Roaming\Sublime Text\Packages'
 
+#### Install
+
+For install run automatons_install.py.
+
 #### How to configure project
 
 ```bash
