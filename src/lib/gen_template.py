@@ -60,6 +60,8 @@ class SrcTemplate(BaseTemplate):
         """Init."""
         super().__init__()
 
+        self.name = "__name__"
+
     def insert(self) -> str:
         """Form full template."""
         self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
@@ -86,10 +88,9 @@ class SrcTemplate(BaseTemplate):
 
         return self.body
 
-    @staticmethod
-    def get_module() -> str:
+    def get_module(self) -> str:
         """Form base module entity."""
-        txt = "module __name__ #(\n"
+        txt = "module " + self.name + " #(\n"
         txt += "    parameter SIM = 0\n"
         txt += ")(\n"
         txt += "    input                        RST,\n"
@@ -213,3 +214,5 @@ class GitignoreTemplate(BaseTemplate):
         self.add_new_line(self.wrap_section(self.SEC_EXT))
 
         return self.body
+
+
