@@ -49,6 +49,18 @@ class TbTemplateCommand(sublime_plugin.TextCommand):
 class CreateStructProjectCommand(sublime_plugin.WindowCommand):
     """Command to generate the structure of hdl-project."""
 
+    def __init__(self, window: sublime.Window) -> None:
+        """Init."""
+        super().__init__(window)
+
+        self.dir_doc = "doc"
+        self.dir_script = "script"
+        self.dir_src = "src"
+        self.dir_tb = "tb"
+        self.dir_sdk = "sdk"
+
+        self.__GIT_IGNORE_EXT__ = ".gitignore"
+
     def run(self) -> None:
         """Command body."""
         path2prj = self.window.project_file_name()
@@ -67,13 +79,13 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
         self.add_folder_to_prj(path2prj)
         self.add_files(path2prj)
 
-    @staticmethod
-    def create_folder_structure(path: str) -> None:
+    def create_folder_structure(self, path: str) -> None:
         """Form folders structure."""
-        os.makedirs(os.path.join(path, "doc"), exist_ok=True)
-        os.makedirs(os.path.join(path, "script"), exist_ok=True)
-        os.makedirs(os.path.join(path, "src"), exist_ok=True)
-        os.makedirs(os.path.join(path, "tb"), exist_ok=True)
+        os.makedirs(os.path.join(path, self.dir_doc), exist_ok=True)
+        os.makedirs(os.path.join(path, self.dir_script), exist_ok=True)
+        os.makedirs(os.path.join(path, self.dir_src), exist_ok=True)
+        os.makedirs(os.path.join(path, self.dir_tb), exist_ok=True)
+        os.makedirs(os.path.join(path, self.dir_sdk), exist_ok=True)
 
     def add_folder_to_prj(self, path: str) -> None:
         """
@@ -91,10 +103,19 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
 
     def add_files(self, path: str) -> None:
         """Create any files for core project."""
-        git_tmp = GitignoreTemplate()
-
-        with open(os.path.join(path, ".gitignore"), "w") as f:
+        with open(os.path.join(path, self.__GIT_IGNORE_EXT__), "w") as f:
+            git_tmp = GitignoreTemplate()
             f.write(git_tmp.insert())
+
+        with open(os.path.join(path, self.dir_src, "main.v"), "w") as f:
+            src_main = SrcTemplate()
+            src_main.name = "main"
+            f.write(src_main.insert())
+
+        with open(os.path.join(path, self.dir_tb, "main_tb.v"), "w") as f:
+            tb_main = TbTemplate()
+            tb_main.name = "main"
+            f.write(tb_main.insert())
 
 
 class DeleteStructProjectCommand(sublime_plugin.WindowCommand):

@@ -24,6 +24,7 @@ class BaseTemplate:
     def get_date(self) -> None:
         """Get date."""
         now = datetime.datetime.now(tz=datetime.timezone.utc)
+        now = now.astimezone()
         self.date = now.strftime("%d.%m.%Y | %H:%M")
 
     def add_new_line(self, txt: str, pad_h: int = 0, pad_v: int = 0) -> None:
@@ -119,6 +120,8 @@ class TbTemplate(BaseTemplate):
         """Init."""
         super().__init__()
 
+        self.name = "__name__"
+
         self.name_clk_period = "PERIOD"
 
     def insert(self) -> str:
@@ -131,7 +134,7 @@ class TbTemplate(BaseTemplate):
 
         self.add_new_line(txt)
 
-        txt = "module __name__ _tb;"
+        txt = "module " + self.name + "_tb;"
 
         self.add_new_line(txt, pad_v=1)
 
