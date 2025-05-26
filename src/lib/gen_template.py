@@ -219,3 +219,43 @@ class GitignoreTemplate(BaseTemplate):
         return self.body
 
 
+class ReadmeTemplate(BaseTemplate):
+    """Form readme.md file."""
+
+    def __init__(self) -> None:
+        """Init and change some patterns."""
+        super().__init__()
+
+    def insert(self) -> str:
+        """Form base .gitignore file."""
+        self.add_new_line("Readme.")
+
+        return self.body
+
+
+class ChangelogTemplate(BaseTemplate):
+    """Form changelog.md file."""
+
+    def __init__(self) -> None:
+        """Init and change some patterns."""
+        super().__init__()
+
+    def insert(self) -> str:
+        """Form base .gitignore file."""
+        txt = "# Changelog\n\n"
+        txt += "All notable changes to this project will be documented in this file.\n\n"
+        txt += "The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), "
+        txt += "and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n\n"
+        txt += "## [Unreleased]\n\n"
+        txt += "### Added\n\n"
+        txt += "### Changed\n\n"
+        txt += "### Removed\n\n"
+        txt += "## [0.0.1] - 2025-05-26\n\n"
+        txt += "### Added\n\n"
+        txt += "### Changed\n\n"
+        txt += "### Removed\n\n"
+
+        self.add_new_line(txt)
+
+        return self.body
+
