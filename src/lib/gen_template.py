@@ -259,3 +259,48 @@ class ChangelogTemplate(BaseTemplate):
 
         return self.body
 
+
+class BuildTemplate(BaseTemplate):
+    """Form build.tcl file."""
+
+    def __init__(self) -> None:
+        """Init and change some patterns."""
+        super().__init__()
+
+        self.path2constrain = ''
+        self.path2block_design = 'pcore_bd.tcl'
+
+        self.prj_name = 'build_tmp'
+        self.dir_prj = ''
+        self.part = 'xc7z020clg400-2'
+
+    def insert(self) -> str:
+        """Form base .gitignore file."""
+        txt = "create_project -force " + self.prj_name + " " + self.dir_prj + " -part " + self.part + "\n\n"
+
+        txt += " set i 0;\n"
+        txt += " foreach j $source_list {\n"
+        txt += "     puts \"add source: $j\"\n"
+        txt += "     add_files $j\n"
+        txt += "     incr i;\n"
+        txt += " }\n\n"
+
+        txt += "add_files -fileset constrs_1 -norecurse " + self.path2constrain + " \n\n"
+
+        txt += "set_property ip_repo_paths " + self.dir_prj + " [current_project]\n"
+        txt += "update_ip_catalog\n\n"
+
+        txt += "set_property top $source_top [current_fileset]\n\n"
+
+        txt += "source " + self.path2block_design + "\n\n"
+
+        txt += "update_compile_order -fileset sources_1\n\n"
+
+        txt += "launch_runs synth_1 -jobs 10\n"
+        txt += "wait_on_run synth_1\n"
+        txt += "launch_runs impl_1 -to_step write_bitstream -jobs 10\n"
+        txt += "wait_on_run impl_1\n"
+
+        self.add_new_line(txt)
+
+        return self.body

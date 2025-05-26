@@ -14,9 +14,10 @@ import sublime_plugin
 
 try:
     from Automatons.src.lib.gen_template import (GitignoreTemplate, SrcTemplate, TbTemplate, ReadmeTemplate,
-                                                 ChangelogTemplate)
+                                                 ChangelogTemplate, BuildTemplate)
 except ImportError:
-    from src.lib.gen_template import GitignoreTemplate, SrcTemplate, TbTemplate, ReadmeTemplate, ChangelogTemplate
+    from src.lib.gen_template import (GitignoreTemplate, SrcTemplate, TbTemplate, ReadmeTemplate,
+                                      ChangelogTemplate, BuildTemplate)
 
 
 class SrcTemplateCommand(sublime_plugin.TextCommand):
@@ -125,6 +126,10 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
         with open(os.path.join(path, "CHANGELOG.md"), "w") as f:
             changelog = ChangelogTemplate()
             f.write(changelog.insert())
+
+        with open(os.path.join(path, self.dir_script, "build.tcl"), "w") as f:
+            build_script = BuildTemplate()
+            f.write(build_script.insert())
 
 
 class DeleteStructProjectCommand(sublime_plugin.WindowCommand):
