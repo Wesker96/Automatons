@@ -274,16 +274,25 @@ class BuildTemplate(BaseTemplate):
         self.dir_prj = ''
         self.part = 'xc7z020clg400-2'
 
+        self.jobs = 10
+
     def insert(self) -> str:
         """Form base .gitignore file."""
-        txt = "create_project -force " + self.prj_name + " " + self.dir_prj + " -part " + self.part + "\n\n"
+        txt = ""
 
-        txt += "set i 0;\n"
-        txt += "foreach j $source_list {\n"
-        txt += "    puts \"add source: $j\"\n"
-        txt += "    add_files $j\n"
-        txt += "    incr i;\n"
+        txt += "proc add_sources {source_list} {\n"
+        txt += "    set i 0\n"
+        txt += "    foreach j $source_list {\n"
+        txt += "        add_files $j\n"
+        txt += "        incr i\n"
+        txt += "    }\n"
         txt += "}\n\n"
+
+        txt += "set list_sources {}\n"
+
+        txt += "create_project -force " + self.prj_name + " " + self.dir_prj + " -part " + self.part + "\n\n"
+
+        txt += "add_sources list_sources\n\n"
 
         txt += "add_files -fileset constrs_1 -norecurse " + self.path2constrain + " \n\n"
 
@@ -296,9 +305,9 @@ class BuildTemplate(BaseTemplate):
 
         txt += "update_compile_order -fileset sources_1\n\n"
 
-        txt += "launch_runs synth_1 -jobs 10\n"
-        txt += "wait_on_run synth_1\n"
-        txt += "launch_runs impl_1 -to_step write_bitstream -jobs 10\n"
+        txt += "launch_runs synth_1 -jobs " + str(self.jobs) + "\n"
+        txt += "wait_on_run synth_1\n\n"
+        txt += "launch_runs impl_1 -to_step write_bitstream -jobs " + str(self.jobs) + "\n"
         txt += "wait_on_run impl_1\n"
 
         self.add_new_line(txt)
