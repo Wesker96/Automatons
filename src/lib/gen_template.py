@@ -31,11 +31,11 @@ class BaseTemplate:
         """Add new line of text."""
         self.body += (" " * pad_h) + txt + "\n" + ("\n" * pad_v)
 
-    def sep_line(self, pattern: str, end: str = '\n') -> str:
+    def sep_line(self, pattern: str, end: str = "\n") -> str:
         """Generate dividing line."""
         return self.comm_sym + pattern * self.max_length + end
 
-    def wrap_section(self, title: str, end: str = '\n') -> str:
+    def wrap_section(self, title: str, end: str = "\n") -> str:
         """Wrap title section."""
         txt = self.sep_line(self.sep_sec_pattern)
         txt += self.comm_sym + " " * ((self.max_length - len(title) - 2) // 2) + title + "\n"
@@ -66,7 +66,7 @@ class SrcTemplate(BaseTemplate):
     def insert(self) -> str:
         """Form full template."""
         self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
-        self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION, end=''))
+        self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION, end=""))
 
         txt = "/*\n\nEngineer   : HammerMeow\nDate       : " + self.date
         txt += "\n\nDescription: lorem ipsum\n\n*/\n" + self.sep_line(self.sep_sec_pattern)
@@ -127,7 +127,7 @@ class TbTemplate(BaseTemplate):
     def insert(self) -> str:
         """Form full testbench template."""
         self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
-        self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION, end=''))
+        self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION, end=""))
 
         txt = "/*\n\nEngineer   : HammerMeow\nDate       : " + self.date
         txt += "\n\nDescription: lorem ipsum\n\n*/\n" + self.sep_line(self.sep_sec_pattern)
@@ -267,12 +267,12 @@ class BuildTemplate(BaseTemplate):
         """Init and change some patterns."""
         super().__init__()
 
-        self.path2constrain = ''
-        self.path2block_design = 'pcore_bd.tcl'
+        self.path2constrain = ""
+        self.path2block_design = "pcore_bd.tcl"
 
-        self.prj_name = 'build_tmp'
-        self.dir_prj = ''
-        self.part = 'xc7z020clg400-2'
+        self.prj_name = "build_tmp"
+        self.dir_prj = ""
+        self.part = "xc7z020clg400-2"
 
         self.jobs = 10
 

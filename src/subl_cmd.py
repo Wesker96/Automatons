@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import subprocess
 
 try:
     from loguru import logger
@@ -13,11 +14,23 @@ import sublime
 import sublime_plugin
 
 try:
-    from Automatons.src.lib.gen_template import (GitignoreTemplate, SrcTemplate, TbTemplate, ReadmeTemplate,
-                                                 ChangelogTemplate, BuildTemplate)
+    from Automatons.src.lib.gen_template import (
+        BuildTemplate,
+        ChangelogTemplate,
+        GitignoreTemplate,
+        ReadmeTemplate,
+        SrcTemplate,
+        TbTemplate,
+    )
 except ImportError:
-    from src.lib.gen_template import (GitignoreTemplate, SrcTemplate, TbTemplate, ReadmeTemplate,
-                                      ChangelogTemplate, BuildTemplate)
+    from src.lib.gen_template import (
+        BuildTemplate,
+        ChangelogTemplate,
+        GitignoreTemplate,
+        ReadmeTemplate,
+        SrcTemplate,
+        TbTemplate,
+    )
 
 
 class SrcTemplateCommand(sublime_plugin.TextCommand):
@@ -64,23 +77,27 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
 
         self.__GIT_IGNORE_EXT__ = ".gitignore"
 
+        self.path2prj = ""
+
     def run(self) -> None:
         """Command body."""
-        path2prj = self.window.project_file_name()
+        self.path2prj = self.window.project_file_name()
 
-        if path2prj is None:
+        if self.path2prj is None:
             sublime.message_dialog("Project file is not found. Please check that the project is open")
             return
-        path2prj = os.path.dirname(path2prj)
+        self.path2prj = os.path.dirname(self.path2prj)
 
-        for entry in os.listdir(path2prj):
-            if os.path.isdir(os.path.join(path2prj, entry)):
+        for entry in os.listdir(self.path2prj):
+            if os.path.isdir(os.path.join(self.path2prj, entry)):
                 sublime.message_dialog("Project is not empty")
                 return
 
-        self.create_folder_structure(path2prj)
-        self.add_folder_to_prj(path2prj)
-        self.add_files(path2prj)
+        self.create_folder_structure(self.path2prj)
+        self.add_folder_to_prj(self.path2prj)
+        self.add_files(self.path2prj)
+
+        self.init_git_repository()
 
     def create_folder_structure(self, path: str) -> None:
         """Form folders structure."""
@@ -134,10 +151,20 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
             f.write(build_script.insert())
 
         with open(os.path.join(path, self.dir_script, "pcore_bd.tcl"), "w") as f:
-            f.write('')
+            f.write("")
 
         with open(os.path.join(path, self.dir_xdc, "main.xdc"), "w") as f:
-            f.write('')
+            f.write("")
+
+    def init_git_repository(self) -> None:
+        """Initialize a git repository in the specified directory."""
+        try:
+            subprocess.run(["git", "init"], cwd=self.path2prj, check=True)
+
+            msg = "Git repository successfully initialized in " + self.path2prj
+            logger.info(msg)
+        except subprocess.CalledProcessError:
+            logger.exception("Error initializing git repository")
 
 
 class DeleteStructProjectCommand(sublime_plugin.WindowCommand):

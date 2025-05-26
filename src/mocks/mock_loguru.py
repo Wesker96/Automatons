@@ -23,3 +23,7 @@ class MockLogger:
     def add(self, *args: tuple, **kwargs: dict) -> None:
         """Mock for add."""
         print(*args, **kwargs)
+
+    def exception(self, *args: tuple, **kwargs: dict) -> None:
+        """Mock for add."""
+        print(*args, **kwargs)
