@@ -31,15 +31,15 @@ class BaseTemplate:
         """Add new line of text."""
         self.body += (" " * pad_h) + txt + "\n" + ("\n" * pad_v)
 
-    def sep_line(self, pattern: str) -> str:
+    def sep_line(self, pattern: str, end: str = '\n') -> str:
         """Generate dividing line."""
-        return self.comm_sym + pattern * self.max_length + "\n"
+        return self.comm_sym + pattern * self.max_length + end
 
-    def wrap_section(self, title: str) -> str:
+    def wrap_section(self, title: str, end: str = '\n') -> str:
         """Wrap title section."""
         txt = self.sep_line(self.sep_sec_pattern)
         txt += self.comm_sym + " " * ((self.max_length - len(title) - 2) // 2) + title + "\n"
-        txt += self.sep_line(self.sep_sec_pattern)
+        txt += self.sep_line(self.sep_sec_pattern, end=end)
 
         return txt
 
@@ -66,7 +66,7 @@ class SrcTemplate(BaseTemplate):
     def insert(self) -> str:
         """Form full template."""
         self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
-        self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION))
+        self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION, end=''))
 
         txt = "/*\n\nEngineer   : HammerMeow\nDate       : " + self.date
         txt += "\n\nDescription: lorem ipsum\n\n*/\n" + self.sep_line(self.sep_sec_pattern)
