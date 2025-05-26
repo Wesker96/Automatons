@@ -60,6 +60,7 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
         self.dir_src = "src"
         self.dir_tb = "tb"
         self.dir_sdk = "sdk"
+        self.dir_xdc = "xdc"
 
         self.__GIT_IGNORE_EXT__ = ".gitignore"
 
@@ -88,6 +89,7 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
         os.makedirs(os.path.join(path, self.dir_src), exist_ok=True)
         os.makedirs(os.path.join(path, self.dir_tb), exist_ok=True)
         os.makedirs(os.path.join(path, self.dir_sdk), exist_ok=True)
+        os.makedirs(os.path.join(path, self.dir_xdc), exist_ok=True)
 
     def add_folder_to_prj(self, path: str) -> None:
         """
@@ -130,6 +132,12 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
         with open(os.path.join(path, self.dir_script, "build.tcl"), "w") as f:
             build_script = BuildTemplate()
             f.write(build_script.insert())
+
+        with open(os.path.join(path, self.dir_script, "pcore_bd.tcl"), "w") as f:
+            f.write('')
+
+        with open(os.path.join(path, self.dir_xdc, "main.xdc"), "w") as f:
+            f.write('')
 
 
 class DeleteStructProjectCommand(sublime_plugin.WindowCommand):

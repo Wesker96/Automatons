@@ -278,12 +278,12 @@ class BuildTemplate(BaseTemplate):
         """Form base .gitignore file."""
         txt = "create_project -force " + self.prj_name + " " + self.dir_prj + " -part " + self.part + "\n\n"
 
-        txt += " set i 0;\n"
-        txt += " foreach j $source_list {\n"
-        txt += "     puts \"add source: $j\"\n"
-        txt += "     add_files $j\n"
-        txt += "     incr i;\n"
-        txt += " }\n\n"
+        txt += "set i 0;\n"
+        txt += "foreach j $source_list {\n"
+        txt += "    puts \"add source: $j\"\n"
+        txt += "    add_files $j\n"
+        txt += "    incr i;\n"
+        txt += "}\n\n"
 
         txt += "add_files -fileset constrs_1 -norecurse " + self.path2constrain + " \n\n"
 
