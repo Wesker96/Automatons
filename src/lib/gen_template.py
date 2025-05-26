@@ -127,7 +127,7 @@ class TbTemplate(BaseTemplate):
     def insert(self) -> str:
         """Form full testbench template."""
         self.add_new_line("`timescale 1ns / 1ps", pad_v=1)
-        self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION))
+        self.add_new_line(self.wrap_section(self.SECT_DESCRIPTION, end=''))
 
         txt = "/*\n\nEngineer   : HammerMeow\nDate       : " + self.date
         txt += "\n\nDescription: lorem ipsum\n\n*/\n" + self.sep_line(self.sep_sec_pattern)
