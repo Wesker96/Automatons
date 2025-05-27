@@ -12,6 +12,10 @@
             {
                 "caption": "Delete HDL Project",
                 "command": "delete_struct_project"
+            },
+            {
+                "caption": "Update Source Skeleton",
+                "command": "update_src"
             }
         ]
     }

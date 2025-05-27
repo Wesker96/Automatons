@@ -1,4 +1,4 @@
-"""Command to create a sample project"""
+"""Command to create a sample project."""
 
 import os
 import subprocess
@@ -21,7 +21,6 @@ try:
         SrcTemplate,
         TbTemplate,
     )
-
     from Automatons.src.lib.manager_src import SrcListGenerator
 except ImportError:
     from src.lib.gen_template import (
@@ -32,7 +31,6 @@ except ImportError:
         SrcTemplate,
         TbTemplate,
     )
-
     from src.lib.manager_src import SrcListGenerator
 
 

@@ -10,21 +10,23 @@ import sublime
 import sublime_plugin
 
 try:
+    from Automatons.src.commands.create_struct_project import CreateStructProjectCommand
+    from Automatons.src.commands.delete_struct_project import DeleteStructProjectCommand
+    from Automatons.src.commands.update_src import UpdateSrcCommand
     from Automatons.src.lib.gen_template import (
         SrcTemplate,
         TbTemplate,
     )
-
-    from Automatons.src.commands.create_struct_project import CreateStructProjectCommand
-    from Automatons.src.commands.delete_struct_project import DeleteStructProjectCommand
 except ImportError:
+    from src.commands.create_struct_project import CreateStructProjectCommand
+    from src.commands.delete_struct_project import DeleteStructProjectCommand
+    from src.commands.update_src import UpdateSrcCommand
     from src.lib.gen_template import (
         SrcTemplate,
         TbTemplate,
     )
 
-    from src.commands.create_struct_project import CreateStructProjectCommand
-    from src.commands.delete_struct_project import DeleteStructProjectCommand
+__all__ = ["CreateStructProjectCommand", "DeleteStructProjectCommand", "UpdateSrcCommand"]
 
 
 class SrcTemplateCommand(sublime_plugin.TextCommand):
