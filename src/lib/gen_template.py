@@ -288,10 +288,10 @@ class BuildTemplate(BaseTemplate):
         txt += "    }\n"
         txt += "}\n\n"
 
-        txt += "set list_sources {}\n"
-
         txt += "create_project -force " + self.prj_name + " " + self.dir_prj + " -part " + self.part + "\n\n"
 
+        txt += "source get_list_sources.tcl\n"
+        txt += "set list_sources [get_final_src_list]\n"
         txt += "add_sources list_sources\n\n"
 
         txt += "add_files -fileset constrs_1 -norecurse " + self.path2constrain + " \n\n"
