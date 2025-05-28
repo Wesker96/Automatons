@@ -262,6 +262,7 @@ class ChangelogTemplate(BaseTemplate):
 
 class BuildTemplate(BaseTemplate):
     """Form build.tcl file."""
+
     BAT = 0
     TCL = 0
 
@@ -283,7 +284,6 @@ class BuildTemplate(BaseTemplate):
 
     def insert(self, file_type: int = TCL) -> str:
         """Form base .gitignore file."""
-
         if file_type == self.TCL:
             self.add_new_line(self.build_tcl())
         elif file_type == self.BAT:
@@ -368,8 +368,8 @@ class BuildTemplate(BaseTemplate):
         txt += "@rem cmd /c allows to return to root script without closing terminal window\n\n"
 
         txt += "if DEFINED XILINX_VIVADO (\n"
-        txt += f"    cmd /c %XILINX_VIVADO%\\settings64.bat /quet\n"
-        txt += f"    cmd /c vivado -mode batch -nolog -nojournal -source %path2build% -notrace\n"
+        txt += "    cmd /c %XILINX_VIVADO%\\settings64.bat /quet\n"
+        txt += "    cmd /c vivado -mode batch -nolog -nojournal -source %path2build% -notrace\n"
         txt += ") else (\n"
         txt += ("    echo don't found XILINX_VIVADO variable. Please set environment variable XILINX_VIVADO - path to "
                 "Vivado, where placed settings64.bat. Or run .settings64-Vivado.bat, script that will set variables "
