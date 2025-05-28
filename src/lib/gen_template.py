@@ -262,6 +262,8 @@ class ChangelogTemplate(BaseTemplate):
 
 class BuildTemplate(BaseTemplate):
     """Form build.tcl file."""
+    BAT = 0
+    TCL = 0
 
     def __init__(self) -> None:
         """Init and change some patterns."""
@@ -276,8 +278,23 @@ class BuildTemplate(BaseTemplate):
 
         self.jobs = 10
 
-    def insert(self) -> str:
+        self.dir_tmp = "build"
+        self.path2build = "..\\script\\build.tcl"
+
+    def insert(self, file_type: int = TCL) -> str:
         """Form base .gitignore file."""
+
+        if file_type == self.TCL:
+            self.add_new_line(self.build_tcl())
+        elif file_type == self.BAT:
+            self.add_new_line(self.build_bat())
+        else:
+            pass
+
+        return self.body
+
+    def build_tcl(self) -> str:
+        """Generate build.tcl file."""
         txt = ""
 
         txt += "proc add_sources {source_list} {\n"
@@ -317,6 +334,51 @@ class BuildTemplate(BaseTemplate):
         txt += "launch_runs impl_1 -to_step write_bitstream -jobs " + str(self.jobs) + "\n"
         txt += "wait_on_run impl_1\n"
 
-        self.add_new_line(txt)
+        return txt
 
-        return self.body
+    def build_bat(self) -> str:
+        """Generate build_run.bat file."""
+        txt = ""
+
+        txt += "chcp 65001\n"
+        txt += "@echo off\n\n"
+
+        txt += "@rem --------------------------------------------------------------------------\n"
+        txt += "@rem declare constants (paths)\n\n"
+
+        txt += f'set "dir_tmp={self.dir_tmp}"\n'
+        txt += f'set "path2build={self.path2build}"\n\n'
+
+        txt += "@rem --------------------------------------------------------------------------\n"
+        txt += "@rem remove directory with built project\n\n"
+
+        txt += "if not exist %dir_tmp% (\n"
+        txt += "    md %dir_tmp%\n"
+        txt += ") else (\n"
+        txt += "    echo Found %dir_tmp%. Clear content.\n"
+        txt += "    rmdir /s /q %dir_tmp%\n"
+        txt += "    md %dir_tmp%\n"
+        txt += ")\n\n"
+
+        txt += "@rem --------------------------------------------------------------------------\n"
+        txt += "@rem run build script\n\n"
+
+        txt += "cd %dir_tmp%\n\n"
+
+        txt += "@rem cmd /c allows to return to root script without closing terminal window\n\n"
+
+        txt += "if DEFINED XILINX_VIVADO (\n"
+        txt += f"    cmd /c %XILINX_VIVADO%\\settings64.bat /quet\n"
+        txt += f"    cmd /c vivado -mode batch -nolog -nojournal -source %path2build% -notrace\n"
+        txt += ") else (\n"
+        txt += ("    echo don't found XILINX_VIVADO variable. Please set environment variable XILINX_VIVADO - path to "
+                "Vivado, where placed settings64.bat. Or run .settings64-Vivado.bat, script that will set variables "
+                "automatically.\n")
+        txt += ")\n\n"
+
+        txt += "echo Build done. Exit from Vivado.\n\n"
+
+        txt += "exit\n"
+
+        return txt
+

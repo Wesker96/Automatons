@@ -119,9 +119,12 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
             changelog = ChangelogTemplate()
             f.write(changelog.insert())
 
+        build_script = BuildTemplate()
         with open(os.path.join(path, self.dir_script, "build.tcl"), "w") as f:
-            build_script = BuildTemplate()
-            f.write(build_script.insert())
+            f.write(build_script.insert(file_type=build_script.TCL))
+
+        with open(os.path.join(path, self.dir_script, "build_run.but"), "w") as f:
+            f.write(build_script.insert(file_type=build_script.TCL))
 
         with open(os.path.join(path, self.dir_script, "get_list_sources.tcl"), "w") as f:
             src_list_script = SrcListGenerator()
