@@ -96,12 +96,9 @@ proc get_final_src_list {{}} {{
 
         self.user_src_list = re.findall(r"get_user_src_list.*?return \{(.*?)\}", content, re.DOTALL)
         self.exclude_src_list = re.findall(r"get_exclude_src_list.*?return \{(.*?)\}", content, re.DOTALL)
-        self.auto_src_list = re.findall(r"get_auto_src_list.*?return \{(.*?)\}", content, re.DOTALL)
 
         self.user_src_list = self.user_src_list[0].strip().split("\n")
         self.exclude_src_list = self.exclude_src_list[0].strip().split("\n")
-        self.auto_src_list = self.auto_src_list[0].strip().split("\n")
 
         self.user_src_list = [item.strip() for item in self.user_src_list if item.strip()]
         self.exclude_src_list = [item.strip() for item in self.exclude_src_list if item.strip()]
-        self.auto_src_list = [item.strip() for item in self.auto_src_list if item.strip()]
