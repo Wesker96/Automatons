@@ -18,6 +18,8 @@ __PLUGIN_TREE__ = [
     "automatons.py",
     "automatons.sublime-commands",
     "rtl.sublime-build",
+    "vivado_log.sublime-settings",
+    "vivado_log.sublime-syntax",
     "Main.sublime-menu",
     ".python-version",
     "CHANGELOG.md",

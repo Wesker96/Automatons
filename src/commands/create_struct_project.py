@@ -123,8 +123,8 @@ class CreateStructProjectCommand(sublime_plugin.WindowCommand):
         with open(os.path.join(path, self.dir_script, "build.tcl"), "w") as f:
             f.write(build_script.insert(file_type=build_script.TCL))
 
-        with open(os.path.join(path, self.dir_script, "build_run.but"), "w") as f:
-            f.write(build_script.insert(file_type=build_script.TCL))
+        with open(os.path.join(path, self.dir_script, "build_run.bat"), "w") as f:
+            f.write(build_script.insert(file_type=build_script.BAT))
 
         with open(os.path.join(path, self.dir_script, "get_list_sources.tcl"), "w") as f:
             src_list_script = SrcListGenerator()

@@ -1,7 +1,7 @@
 {
 	"shell_cmd": "cd /d \"${folder}\" && script\\build_run.bat",
     "target": "ansi_color_build",
-    "syntax": "Packages/vivado_log.sublime-syntax",
+    "syntax": "Packages/Automatons/vivado_log.sublime-syntax",
     "word_wrap": true,
     "interactive": true
 }

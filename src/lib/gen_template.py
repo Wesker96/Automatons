@@ -263,8 +263,8 @@ class ChangelogTemplate(BaseTemplate):
 class BuildTemplate(BaseTemplate):
     """Form build.tcl file."""
 
-    BAT = 0
     TCL = 0
+    BAT = 1
 
     def __init__(self) -> None:
         """Init and change some patterns."""
@@ -284,6 +284,8 @@ class BuildTemplate(BaseTemplate):
 
     def insert(self, file_type: int = TCL) -> str:
         """Form base .gitignore file."""
+        self.body = ""
+
         if file_type == self.TCL:
             self.add_new_line(self.build_tcl())
         elif file_type == self.BAT:
@@ -310,19 +312,19 @@ class BuildTemplate(BaseTemplate):
         txt += "set source_top main\n"
         txt += "set jobs 10\n\n"
 
-        txt += 'source "$glob_dir_build_scripts/get_list_sources.tcl"'
-        txt += "set list_sources [get_final_src_list]"
+        txt += 'source "$glob_dir_build_scripts/get_list_sources.tcl"\n'
+        txt += "set list_sources [get_final_src_list]\n\n"
 
         txt += "# ---------------------------------------------------------\n\n"
 
         txt += "create_project -force " + self.prj_name + " -part " + self.part + "\n\n"
 
-        txt += "add_sources list_sources\n"
+        txt += "add_sources $list_sources\n"
         txt += "add_files -fileset constrs_1 -norecurse $path2constrain\n\n"
 
         txt += "set_property top $source_top [current_fileset]\n\n"
 
-        txt += "source " + self.path2block_design + "\n\n"
+        txt += "source \"$glob_dir_build_scripts/" + self.path2block_design + "\"\n\n"
 
         txt += "update_compile_order -fileset sources_1\n\n"
 
