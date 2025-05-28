@@ -17,6 +17,7 @@ __PLUGIN_TREE__ = [
     "src",
     "automatons.py",
     "automatons.sublime-commands",
+    "rtl.sublime-build",
     "Main.sublime-menu",
     ".python-version",
     "CHANGELOG.md",
