@@ -15,11 +15,10 @@ __NAME_ENV_AUTOMATONS__ = "AUTOMATONS"
 __PATTERN_OF_SUBL_FOLDER__ = "Sublime Text"
 __PLUGIN_TREE__ = [
     "src",
+    "highlights",
     "automatons.py",
     "automatons.sublime-commands",
     "rtl.sublime-build",
-    "vivado_log.sublime-settings",
-    "vivado_log.sublime-syntax",
     "Main.sublime-menu",
     ".python-version",
     "CHANGELOG.md",
