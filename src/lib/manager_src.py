@@ -105,8 +105,8 @@ proc get_final_src_list {{}} {{
         self.user_src_list = [item.strip() for item in self.user_src_list if item.strip()]
         self.exclude_src_list = [item.strip() for item in self.exclude_src_list if item.strip()]
 
-    def converted_slash(self):
+    def converted_slash(self) -> None:
         """Replace slash."""
-        self.user_src_list = [path.replace('\\', '/') for path in self.user_src_list]
-        self.exclude_src_list = [path.replace('\\', '/') for path in self.exclude_src_list]
-        self.auto_src_list = [path.replace('\\', '/') for path in self.auto_src_list]
+        self.user_src_list = [path.replace("\\", "/") for path in self.user_src_list]
+        self.exclude_src_list = [path.replace("\\", "/") for path in self.exclude_src_list]
+        self.auto_src_list = [path.replace("\\", "/") for path in self.auto_src_list]

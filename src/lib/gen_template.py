@@ -288,16 +288,20 @@ class BuildTemplate(BaseTemplate):
         txt += "    }\n"
         txt += "}\n\n"
 
-        txt += "create_project -force " + self.prj_name + " " + self.dir_prj + " -part " + self.part + "\n\n"
+        txt += 'set glob_dir_build_scripts "../script"\n'
+        txt += 'set path2constrain "../xdc/main.xdc"\n'
+        txt += "set source_top main\n"
+        txt += "set jobs 10\n\n"
 
-        txt += "source get_list_sources.tcl\n"
-        txt += "set list_sources [get_final_src_list]\n"
-        txt += "add_sources list_sources\n\n"
+        txt += 'source "$glob_dir_build_scripts/get_list_sources.tcl"'
+        txt += "set list_sources [get_final_src_list]"
 
-        txt += "add_files -fileset constrs_1 -norecurse " + self.path2constrain + " \n\n"
+        txt += "# ---------------------------------------------------------\n\n"
 
-        txt += "set_property ip_repo_paths " + self.dir_prj + " [current_project]\n"
-        txt += "update_ip_catalog\n\n"
+        txt += "create_project -force " + self.prj_name + " -part " + self.part + "\n\n"
+
+        txt += "add_sources list_sources\n"
+        txt += "add_files -fileset constrs_1 -norecurse $path2constrain\n\n"
 
         txt += "set_property top $source_top [current_fileset]\n\n"
 
@@ -305,8 +309,11 @@ class BuildTemplate(BaseTemplate):
 
         txt += "update_compile_order -fileset sources_1\n\n"
 
+        txt += "# ---------------------------------------------------------\n\n"
+
         txt += "launch_runs synth_1 -jobs " + str(self.jobs) + "\n"
         txt += "wait_on_run synth_1\n\n"
+
         txt += "launch_runs impl_1 -to_step write_bitstream -jobs " + str(self.jobs) + "\n"
         txt += "wait_on_run impl_1\n"
 
