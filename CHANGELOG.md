@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 28-05-2025
+
 ### Added
-    - generators of basicaly files: main.v, main_tb.v, .gitignore, readme.md, changelog.md
-    - generator of project structure
+    - project deployment subsystem
+    - build system
+    - highlight log
 
 ## [0.0.1] - 24-05-2025
 

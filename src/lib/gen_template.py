@@ -324,7 +324,7 @@ class BuildTemplate(BaseTemplate):
 
         txt += "set_property top $source_top [current_fileset]\n\n"
 
-        txt += "source \"$glob_dir_build_scripts/" + self.path2block_design + "\"\n\n"
+        txt += 'source "$glob_dir_build_scripts/' + self.path2block_design + '"\n\n'
 
         txt += "update_compile_order -fileset sources_1\n\n"
 
